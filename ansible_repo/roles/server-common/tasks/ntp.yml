@@ -1,0 +1,27 @@
+---
+- name: Install ntp Redhat
+  yum: name=ntp state=present
+  when: ansible_os_family == "RedHat"
+ 
+- name: Install ntp Debian 
+  apt: name=ntp state=present
+  when: ansible_os_family == "Debian"
+
+- name: Deploy ntp config Redhat
+  template: src=ntpd.j2 dest=/etc/ntpd.conf
+  when: ansible_os_family == "RedHat"
+  notify: NTP Restart Redhat
+
+- name: Deploy ntp config Debian
+  template: src=ntp.j2 dest=/etc/ntp.conf
+  when: ansible_os_family == "Debian"
+  notify: NTP Restart Debian
+
+- name: Verify ntp Running Redhat
+  service: name=ntpd state=started
+  when: ansible_os_family == "RedHat"
+
+- name: Verify ntp Running Debian
+  service: name=ntp state=started
+  when: ansible_os_family == "Debian"
+

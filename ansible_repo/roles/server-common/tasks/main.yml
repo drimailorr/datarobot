@@ -1,3 +1,2 @@
 ---
-- include: snmp.yml
-- include: syslog.yml
+- include: ntp.yml

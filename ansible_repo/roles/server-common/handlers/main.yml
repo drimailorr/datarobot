@@ -1,6 +1,8 @@
 ---
-- name: SNMP Restart
-  service: name=snmpd state=restarted
+- name: NTP Restart Redhat
+  service: name=ntpd state=restarted
+  when: ansible_os_family == "RedHat"
 
-- name: Syslog Restart
-  service: name=rsyslog state=restarted
+- name: NTP Restart Debian
+  service: name=ntp state=restarted
+  when: ansible_os_family == "Debian"
