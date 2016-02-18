@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
     end
 
 	config.vm.define "webserver1" do |webserver1|
-	 webserver1.vm.box="ubuntu/trusty64"
+	 webserver1.vm.box="nrel/CentOS-6.5-x86_64"
     	 webserver1.vm.hostname="webserver1.roma.local"
     	 webserver1.vm.network "private_network", ip: "192.168.33.30"
          webserver1.vm.provision "shell", path: "appprovisioning.sh"
