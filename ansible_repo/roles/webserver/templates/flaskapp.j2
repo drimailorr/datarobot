@@ -1,6 +1,6 @@
 import os
 from flask import Flask, session, render_template, jsonify
-import requests
+#import requests
 import json
 import pymongo
 import datetime, time
@@ -14,14 +14,6 @@ def get_db():
 	
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
-
-#Status endpoint made for monitoring system to check if the test record exist in the DB via endpoint GET call 
-@app.route('/run_get/status')
-def run_get_status():
-    uid = 'test'
-    message = str(dbpointer.users.find({'uid':uid})
-    return message
-
 
 #Get endpoint with UID and Date input parameters
 @app.route('/run_get/<uid>/<mydate>')
