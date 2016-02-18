@@ -1,0 +1,4 @@
+---
+- name: Mongo service  Restart Redhat
+  service: name=mongod state=restarted
+  when: ansible_os_family == "RedHat"

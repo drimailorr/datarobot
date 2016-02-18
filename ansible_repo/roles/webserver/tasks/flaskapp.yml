@@ -1,0 +1,4 @@
+---
+- name: Deploy flaskapp config Redhat
+  template: src=flaskapp.j2 dest=~/flaskapp.py
+  notify: start flask app

@@ -1,0 +1,18 @@
+---
+- name: Creating Mongo repo
+  template: src=mongorepo.j2 dest=/etc/yum.repos.d/10gen.repo
+  when: ansible_os_family == "RedHat"
+
+- name: Install Mongo packages Redhat
+  yum: name=mongo-10gen,mongo-10gen-server state=present
+  when: ansible_os_family == "RedHat"
+ 
+- name: Deploy mongo config Redhat
+  template: src=mongod.j2 dest=/etc/mongod.conf
+  when: ansible_os_family == "RedHat"
+  notify: Mongo service  Restart Redhat
+
+- name: Verify ntp Running Redhat
+  service: name=mongod enabled=yes state=started
+  when: ansible_os_family == "RedHat"
+

@@ -1,0 +1,78 @@
+import os
+from flask import Flask, session, render_template, jsonify
+import requests
+import json
+import pymongo
+import datetime, time
+import hashlib
+
+def get_db():
+    from pymongo import MongoClient
+    client = MongoClient('{{mongohost}}:27017')
+    db = client.users
+    return db
+	
+app = Flask(__name__)
+app.secret_key = os.urandom(24)
+
+#Status endpoint made for monitoring system to check if the test record exist in the DB via endpoint GET call 
+@app.route('/run_get/status')
+def run_get_status():
+    uid = 'test'
+    message = str(dbpointer.users.find({'uid':uid})
+    return message
+
+
+#Get endpoint with UID and Date input parameters
+@app.route('/run_get/<uid>/<mydate>')
+def run_get(uid,mydate):
+    
+    frommydate = datetime.datetime.strptime(mydate+"T00:00:00.000000", '%Y-%m-%dT%H:%M:%S.%f').isoformat()
+    tomydate   = datetime.datetime.strptime(mydate+"T23:59:59.999999", '%Y-%m-%dT%H:%M:%S.%f').isoformat()
+
+    message=""
+    for i in dbpointer.users.find({'uid':uid,'date':{'$gte':frommydate,'$lte':tomydate}}):
+         message = message + str(i) +"<br>"
+    message += "<br>"+"Number of occurances "+str(dbpointer.users.find({'uid':uid,'date':{'$gte':frommydate,'$lte':tomydate}}).count())
+    return message
+    
+
+#Post endpoint to update db with predefined payload
+@app.route('/run_post/insert')
+def run_post():
+	payload = [{
+	'uid': '1', 
+	'name': 'John Doe', 
+	'date': '2015-05-12T14:36:00.451765', 
+	'md5checksum': '348be89b2fa602a9dc4713b245e1f1d'}, 
+	{'uid': '2', 
+	'name': 'Jane Doe', 
+	'date': '2015-05-13T14:36:00.451765', 
+	'md5checksum': '84d727f094712a56fed32a19a5db7578'} 
+	]
+	
+	status = ""
+	for rec in payload:
+		MD5calc = hashlib.md5(str(rec.get('uid')+rec.get('name')+rec.get('date'))).hexdigest()
+		#print "MD5 calculated:  ", MD5calc
+		MD5retr = rec.get('md5checksum')
+		#print "MD5  retrieved:  ", MD5retr
+		
+		if MD5calc == MD5retr:
+			rec_id=dbpointer.users.insert(rec)
+			status += "UID: "+str(rec.get('uid'))+" successfully persisted to DB <br>"
+		else:
+			status += "UID: "+str(rec.get('uid'))+" Write error: md5checksum mismatch <br>"
+	return status
+
+
+
+if __name__ == '__main__':
+	
+	dbpointer = get_db()
+
+	app.run( 
+		host="0.0.0.0",
+		port=int("8080"),
+		debug=True
+	)
