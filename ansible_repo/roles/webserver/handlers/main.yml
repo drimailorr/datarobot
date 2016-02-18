@@ -1,8 +1,3 @@
 ---
-- name: NTP Restart Redhat
-  service: name=ntpd state=restarted
-  when: ansible_os_family == "RedHat"
-
-- name: NTP Restart Debian
-  service: name=ntp state=restarted
-  when: ansible_os_family == "Debian"
+- name: start flask app
+  shell: /usr/bin/python ~/flaskapp.py &

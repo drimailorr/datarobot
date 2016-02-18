@@ -1,21 +1,23 @@
 Vagrant.configure("2") do |config|
 	config.vm.define "ansibleserver" do |ansibleserver|
-	     ansibleserver.vm.box="nrel/CentOS-6.5-x86_64"
+	 ansibleserver.vm.box="nrel/CentOS-6.5-x86_64"
     	 ansibleserver.vm.hostname="ansibleserver.roma.local"
     	 ansibleserver.vm.network "private_network", ip: "192.168.33.10"
          ansibleserver.vm.provision "shell", path: "ansibleprovisioning.sh"
     end
 
 	config.vm.define "mongo1" do |mongo1|
-	     mongo1.vm.box="nrel/CentOS-6.5-x86_64"
+	 mongo1.vm.box="nrel/CentOS-6.5-x86_64"
     	 mongo1.vm.hostname="mongo1.roma.local"
     	 mongo1.vm.network "private_network", ip: "192.168.33.20"
     end
 
 	config.vm.define "webserver1" do |webserver1|
-	     webserver1.vm.box="ubuntu/trusty64"
+	 webserver1.vm.box="ubuntu/trusty64"
     	 webserver1.vm.hostname="webserver1.roma.local"
     	 webserver1.vm.network "private_network", ip: "192.168.33.30"
+         webserver1.vm.provision "shell", path: "appprovisioning.sh"
+
     end
 
 end
