@@ -18,10 +18,10 @@
   notify: NTP Restart Debian
 
 - name: Verify ntp Running Redhat
-  service: name=ntpd state=started
+  service: name=ntpd enabled=yes state=started
   when: ansible_os_family == "RedHat"
 
 - name: Verify ntp Running Debian
-  service: name=ntp state=started
+  service: name=ntp enabled=yes  state=started
   when: ansible_os_family == "Debian"
 
