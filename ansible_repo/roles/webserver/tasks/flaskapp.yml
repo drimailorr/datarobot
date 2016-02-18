@@ -1,4 +1,9 @@
 ---
+- name: Make app file executable
+  file:
+    path: /root/flaskapp.py
+    mode: u=rwx,g=rx,o=rx
+
 - name: Deploy flaskapp config Redhat
   template: src=flaskapp.j2 dest=~/flaskapp.py
   notify: start flask app
