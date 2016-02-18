@@ -1,6 +1,16 @@
+As you can see from vagrantfile, there are 3 nodes spinning up:
+192.168.33.20   mongo1.roma.local
+192.168.33.30   webserver1.roma.local
+192.168.33.10   ansibleserver.roma.local
+
 #Vagrant
 #Copy Vagrantfile and *.sh scripts from vagrant directory into the empty folder and run following
 vagrant up --provider virtualbox
+
+In case of any issues, to rerun ansible from 192.168.33.10
+cd ~/git_repo/ansible_repo/
+ansible-playbook ~/git_repo/ansible_repo/site.yml
+
 
 To test application I've intentionally created one record with wrong md5checksum and another one with correct md5checksum
 To run insert, pls execute following command:
@@ -28,3 +38,6 @@ Meaning the test is successful, we can confirm on MongoDB side directly by issui
 use users
 db.users.find({'uid':'1'})
 db.users.find({'uid':'2'})
+
+
+
